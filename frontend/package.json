@@ -1,0 +1,36 @@
+{
+  "name": "fasosuku-frontend",
+  "version": "1.0.0",
+  "description": "FasoSuku PWA - Digital Library Frontend",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "lint": "eslint src --ext .js,.vue",
+    "format": "prettier --write src/**/*.{vue,js,css}"
+  },
+  "dependencies": {
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.6",
+    "axios": "^1.5.0",
+    "pdfjs-dist": "^3.11.174",
+    "tailwindcss": "^3.3.5",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.3.4",
+    "vite": "^4.5.0",
+    "vitest": "^0.34.6",
+    "@vitest/ui": "^0.34.6",
+    "@playwright/test": "^1.40.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.3",
+    "@vue/test-utils": "^2.4.1"
+  }
+}
