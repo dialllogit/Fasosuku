@@ -1,84 +1,64 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const routes = [
   {
     path: '/',
-    component: () => import('@/pages/Home.vue'),
-    name: 'home'
-  },
-  {
-    path: '/auth/login',
-    component: () => import('@/pages/auth/Login.vue'),
-    name: 'login',
-    meta: { requiresGuest: true }
-  },
-  {
-    path: '/auth/register',
-    component: () => import('@/pages/auth/Register.vue'),
-    name: 'register',
-    meta: { requiresGuest: true }
+    component: () => import('../pages/Home.vue')
   },
   {
     path: '/catalog',
-    component: () => import('@/pages/Catalog.vue'),
-    name: 'catalog'
+    component: () => import('../pages/Catalog.vue')
+  },
+  {
+    path: '/auth',
+    component: () => import('../pages/Auth.vue')
   },
   {
     path: '/book/:id',
-    component: () => import('@/pages/BookDetail.vue'),
-    name: 'book-detail'
+    component: () => import('../pages/BookDetail.vue')
   },
   {
-    path: '/reader/:bookId/:chapterId',
-    component: () => import('@/pages/Reader.vue'),
-    name: 'reader',
+    path: '/reader/:id',
+    component: () => import('../pages/Reader.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/dashboard',
-    component: () => import('@/pages/Dashboard.vue'),
-    name: 'dashboard',
+    path: '/profile',
+    component: () => import('../pages/Profile.vue'),
     meta: { requiresAuth: true }
   },
   {
-    path: '/dashboard/teacher',
-    component: () => import('@/pages/dashboard/TeacherDashboard.vue'),
-    name: 'teacher-dashboard',
-    meta: { requiresAuth: true, requiresRole: 'teacher' }
+    path: '/library',
+    component: () => import('../pages/Library.vue'),
+    meta: { requiresAuth: true }
   },
   {
-    path: '/admin',
-    component: () => import('@/pages/admin/AdminPanel.vue'),
-    name: 'admin',
-    meta: { requiresAuth: true, requiresRole: 'admin' }
+    path: '/teacher/dashboard',
+    component: () => import('../pages/TeacherDashboard.vue'),
+    meta: { requiresAuth: true, requiresTeacher: true }
   },
   {
     path: '/:pathMatch(.*)*',
-    component: () => import('@/pages/NotFound.vue'),
-    name: 'not-found'
+    component: () => import('../pages/NotFound.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore()
-  const isAuthenticated = authStore.isAuthenticated
-  const userRole = authStore.user?.role
+  const authStore = useAuthStore();
 
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    next({ name: 'login', query: { redirect: to.fullPath } })
-  } else if (to.meta.requiresGuest && isAuthenticated) {
-    next({ name: 'home' })
-  } else if (to.meta.requiresRole && userRole !== to.meta.requiresRole) {
-    next({ name: 'home' })
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    next('/auth');
+  } else if (to.meta.requiresTeacher && authStore.user?.role !== 'teacher') {
+    next('/');
   } else {
-    next()
+    next();
   }
-})
+});
 
-export default router
+export default router;

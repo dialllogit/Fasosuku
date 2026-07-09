@@ -1,54 +1,64 @@
 <template>
-  <div class="space-y-8">
-    <div class="text-center space-y-4">
-      <h1 class="text-4xl font-bold">Bienvenue sur FasoSuku</h1>
-      <p class="text-xl text-gray-600">La Bibliothèque Numérique des Chercheurs du Mali</p>
-      <SearchBar />
+  <div class="container mx-auto py-12 px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Hero Section -->
+      <div class="md:col-span-2">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+          Bienvenue sur 📚 FasoSuku
+        </h1>
+        <p class="text-xl text-gray-600 mb-6">
+          La Bibliothèque Numérique des Chercheurs du Mali. Accédez à des milliers de ressources académiques au meilleur prix.
+        </p>
+        <router-link to="/catalog" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700">
+          Explorer le Catalogue
+        </router-link>
+      </div>
+
+      <!-- Stats -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="mb-4">
+          <p class="text-3xl font-bold text-blue-600">500+</p>
+          <p class="text-gray-600">Livres disponibles</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-3xl font-bold text-green-600">200+</p>
+          <p class="text-gray-600">Enseignants actifs</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-purple-600">10K+</p>
+          <p class="text-gray-600">Utilisateurs</p>
+        </div>
+      </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-6">
-      <div class="card text-center">
-        <div class="text-4xl mb-4">📚</div>
-        <h3 class="font-bold text-lg mb-2">10,000+ Livres</h3>
-        <p class="text-gray-600">Contenu académique de qualité</p>
+    <!-- Features -->
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="text-center">
+        <div class="text-4xl mb-2">💰</div>
+        <h3 class="font-semibold mb-2">Micro-Paiement</h3>
+        <p class="text-gray-600 text-sm">Achetez par chapitre à partir de 500 FCFA</p>
       </div>
-      <div class="card text-center">
-        <div class="text-4xl mb-4">💰</div>
-        <h3 class="font-bold text-lg mb-2">Micro-paiement</h3>
-        <p class="text-gray-600">Achetez par chapitre, pas des livres entiers</p>
+      <div class="text-center">
+        <div class="text-4xl mb-2">📱</div>
+        <h3 class="font-semibold mb-2">Mobile Money</h3>
+        <p class="text-gray-600 text-sm">Orange, Moov, Wave - Paiement simple</p>
       </div>
-      <div class="card text-center">
-        <div class="text-4xl mb-4">🔒</div>
-        <h3 class="font-bold text-lg mb-2">Sécurisé</h3>
-        <p class="text-gray-600">Votre contenu est protégé</p>
+      <div class="text-center">
+        <div class="text-4xl mb-2">🔒</div>
+        <h3 class="font-semibold mb-2">Sécurisé</h3>
+        <p class="text-gray-600 text-sm">Protection anti-copie et filigrane</p>
       </div>
-    </div>
-
-    <div class="space-y-4">
-      <h2 class="text-2xl font-bold">Livres Populaires</h2>
-      <BookCarousel v-if="featuredBooks.length" :books="featuredBooks" />
-      <div v-else class="text-center py-8 text-gray-600">
-        <p>Chargement des livres...</p>
+      <div class="text-center">
+        <div class="text-4xl mb-2">📴</div>
+        <h3 class="font-semibold mb-2">Hors-Ligne</h3>
+        <p class="text-gray-600 text-sm">Lisez sans connexion internet</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import SearchBar from '@/components/SearchBar.vue'
-import BookCarousel from '@/components/BookCarousel.vue'
-import { useBookStore } from '@/store/book'
+import { useAuthStore } from '../stores/auth';
 
-const bookStore = useBookStore()
-const featuredBooks = ref([])
-
-onMounted(async () => {
-  try {
-    await bookStore.searchBooks('', '')
-    featuredBooks.value = bookStore.books.slice(0, 5)
-  } catch (error) {
-    console.error('Error loading featured books:', error)
-  }
-})
+const authStore = useAuthStore();
 </script>
